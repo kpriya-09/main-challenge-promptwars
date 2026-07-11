@@ -9,7 +9,10 @@ function getClient() {
   return client;
 }
 
-const MODEL = 'gemini-1.5-flash';
+// Use Google's rolling Flash alias so the app does not break when a dated
+// model (such as gemini-1.5-flash) is retired. Deployments can still pin a
+// specific supported model when needed.
+const MODEL = process.env.GEMINI_MODEL || 'gemini-flash-latest';
 
 /**
  * The only place that calls Gemini. Feature-specific code supplies a
