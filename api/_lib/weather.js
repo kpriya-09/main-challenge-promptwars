@@ -1,33 +1,55 @@
 import { config } from './config.js';
 
 const BASE = 'https://api.openweathermap.org';
+const WEATHER_TTL_MS = 5 * 60 * 1000;
+const GEOCODE_TTL_MS = 24 * 60 * 60 * 1000;
+const cache = new Map();
+
+async function cached(key, ttl, load) {
+  const existing = cache.get(key);
+  if (existing && existing.expiresAt > Date.now()) return existing.value;
+
+  // Cache the in-flight promise too, preventing concurrent dashboard/plan
+  // requests for the same location from duplicating an external API call.
+  const value = Promise.resolve().then(load);
+  cache.set(key, { value, expiresAt: Date.now() + ttl });
+  try {
+    return await value;
+  } catch (error) {
+    cache.delete(key);
+    throw error;
+  }
+}
+
+async function fetchJson(url, errorLabel) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`${errorLabel} (${response.status})`);
+  return response.json();
+}
 
 export async function geocodeCity(city, state, country) {
-  const key = config.openWeatherApiKey;
   const query = [city, state, country].filter(Boolean).join(',');
-  const url = `${BASE}/geo/1.0/direct?q=${encodeURIComponent(query)}&limit=1&appid=${key}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Geocoding failed (${res.status})`);
-  const [match] = await res.json();
-  if (!match) throw new Error(`Could not find location for "${query}"`);
-  return { lat: match.lat, lon: match.lon, name: match.name, country: match.country };
+  return cached(`geo:${query.toLowerCase()}`, GEOCODE_TTL_MS, async () => {
+    const url = `${BASE}/geo/1.0/direct?q=${encodeURIComponent(query)}&limit=1&appid=${config.openWeatherApiKey}`;
+    const [match] = await fetchJson(url, 'Geocoding failed');
+    if (!match) throw new Error(`Could not find location for "${query}"`);
+    return { lat: match.lat, lon: match.lon, name: match.name, country: match.country };
+  });
 }
 
 export async function getCurrentWeather(lat, lon) {
-  const key = config.openWeatherApiKey;
-  const url = `${BASE}/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${key}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Current weather lookup failed (${res.status})`);
-  return res.json();
+  return cached(`current:${lat}:${lon}`, WEATHER_TTL_MS, () => {
+    const url = `${BASE}/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${config.openWeatherApiKey}`;
+    return fetchJson(url, 'Current weather lookup failed');
+  });
 }
 
 export async function getForecast(lat, lon) {
-  const key = config.openWeatherApiKey;
-  const url = `${BASE}/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${key}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Forecast lookup failed (${res.status})`);
-  const data = await res.json();
-  return data.list ?? [];
+  return cached(`forecast:${lat}:${lon}`, WEATHER_TTL_MS, async () => {
+    const url = `${BASE}/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${config.openWeatherApiKey}`;
+    const data = await fetchJson(url, 'Forecast lookup failed');
+    return data.list ?? [];
+  });
 }
 
 const RAIN_HEAVY_MM_3H = 15;
