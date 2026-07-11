@@ -10,7 +10,7 @@ export function renderSignup(app) {
       <div class="glass-card auth-card">
         <h1>Get monsoon-ready</h1>
         <p style="color: var(--text-secondary); margin-top: -8px;">Personalized preparedness plans in minutes</p>
-        <div id="error-slot"></div>
+        <div id="error-slot" aria-live="assertive"></div>
         <form id="signup-form">
           <div class="field">
             <label for="name">Name</label>
@@ -22,7 +22,8 @@ export function renderSignup(app) {
           </div>
           <div class="field">
             <label for="password">Password</label>
-            <input id="password" type="password" required minlength="8" autocomplete="new-password" />
+            <input id="password" type="password" required minlength="8" autocomplete="new-password" aria-describedby="password-help" />
+            <small class="field-help" id="password-help">Use at least 8 characters.</small>
           </div>
           <button class="btn btn-primary btn-block" type="submit">Sign up</button>
         </form>

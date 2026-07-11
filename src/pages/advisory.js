@@ -17,44 +17,33 @@ const RECOMMENDATION_RISK = {
 
 function renderForm(app) {
   app.innerHTML = `
-    <div class="glass-card" style="max-width:560px; margin: 0 auto;">
-      <h1 style="margin-top:0;">Travel Advisory</h1>
-      <p style="color: var(--text-secondary);">Check monsoon-season conditions before you travel.</p>
+    <div class="glass-card travel-card">
+      <p class="eyebrow">Quick travel check</p>
+      <h1 style="margin:5px 0 8px;">Is it safe to go?</h1>
+      <p class="wizard-intro">Tell us where you’re headed. We’ll combine live weather with your household needs and give you a clear recommendation.</p>
       <form id="advisory-form">
         <div class="field">
-          <label>Destination city</label>
+          <label for="destinationCity">Destination city</label>
           <select id="destinationCity" required>
             <option value="">Select...</option>
             <option>Mumbai</option><option>Delhi</option><option>Bengaluru</option><option>Hyderabad</option><option>Ahmedabad</option><option>Chennai</option><option>Kolkata</option><option>Surat</option><option>Pune</option><option>Jaipur</option><option>Lucknow</option><option>Kanpur</option><option>Nagpur</option><option>Indore</option><option>Thane</option><option>Bhopal</option><option>Visakhapatnam</option><option>Pimpri-Chinchwad</option><option>Patna</option><option>Vadodara</option><option>Ghaziabad</option><option>Ludhiana</option><option>Agra</option><option>Nashik</option><option>Faridabad</option><option>Meerut</option><option>Rajkot</option><option>Kalyan-Dombivli</option><option>Vasai-Virar</option><option>Varanasi</option><option>Srinagar</option><option>Aurangabad</option><option>Dhanbad</option><option>Amritsar</option><option>Navi Mumbai</option><option>Allahabad</option><option>Howrah</option><option>Ranchi</option><option>Gwalior</option><option>Jabalpur</option><option>Coimbatore</option><option>Vijayawada</option><option>Jodhpur</option><option>Madurai</option><option>Raipur</option><option>Kota</option><option>Guwahati</option><option>Chandigarh</option><option>Other</option>
           </select>
         </div>
-        <div class="field">
-          <label>State</label>
-          <select id="destinationState" required>
-            <option value="">Select...</option>
-            <option>Andaman and Nicobar Islands</option><option>Andhra Pradesh</option><option>Arunachal Pradesh</option><option>Assam</option><option>Bihar</option><option>Chandigarh</option><option>Chhattisgarh</option><option>Dadra and Nagar Haveli</option><option>Delhi</option><option>Goa</option><option>Gujarat</option><option>Haryana</option><option>Himachal Pradesh</option><option>Jammu and Kashmir</option><option>Jharkhand</option><option>Karnataka</option><option>Kerala</option><option>Ladakh</option><option>Lakshadweep</option><option>Madhya Pradesh</option><option>Maharashtra</option><option>Manipur</option><option>Meghalaya</option><option>Mizoram</option><option>Nagaland</option><option>Odisha</option><option>Puducherry</option><option>Punjab</option><option>Rajasthan</option><option>Sikkim</option><option>Tamil Nadu</option><option>Telangana</option><option>Tripura</option><option>Uttar Pradesh</option><option>Uttarakhand</option><option>West Bengal</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Country</label>
-          <select id="destinationCountry" required>
-            <option>India</option>
-          </select>
-        </div>
-        <div class="field"><label>Travel date</label><input id="travelDate" type="date" /></div>
-        <div class="field">
-          <label>Mode of travel</label>
-          <select id="mode">
-            <option value="">Select...</option>
-            <option>Car</option>
-            <option>Train</option>
-            <option>Flight</option>
-            <option>Bus</option>
-            <option>Two-wheeler</option>
-          </select>
-        </div>
-        <div class="field"><label>Notes (optional)</label><textarea id="notes" placeholder="e.g. traveling with elderly parent, low-lying route"></textarea></div>
-        <button type="submit" class="btn btn-primary btn-block">Get advisory</button>
+        <input id="destinationState" type="hidden" value="" />
+        <input id="destinationCountry" type="hidden" value="India" />
+        <div class="field"><label for="travelDate">Travel date <span class="optional-label">Optional</span></label><input id="travelDate" name="travelDate" type="date" /></div>
+        <fieldset class="field fieldset-field">
+          <legend>How are you travelling? <span class="optional-label">Optional</span></legend>
+          <div class="choice-grid travel-mode-grid">
+            ${['Car', 'Train', 'Flight', 'Bus', 'Two-wheeler'].map((mode, index) => `<div class="choice-option"><input class="choice-input" type="radio" id="mode-${index}" name="mode" value="${mode}" /><label class="choice-card" for="mode-${index}"><span class="choice-mark" aria-hidden="true"></span><strong>${mode}</strong></label></div>`).join('')}
+          </div>
+        </fieldset>
+        <details class="optional-panel travel-details">
+          <summary><span>Add a note</span><small>Optional · companions, accessibility, or route concerns</small></summary>
+          <div class="optional-fields"><div class="field"><label for="notes">Anything we should plan around?</label><textarea id="notes" name="notes" placeholder="For example: travelling with an older parent"></textarea></div></div>
+        </details>
+        <button type="submit" class="btn btn-primary btn-block">Check my trip</button>
+        <p class="save-note">Usually ready in under a minute.</p>
       </form>
       <div id="result-slot"></div>
     </div>
@@ -70,7 +59,7 @@ function renderForm(app) {
       destinationState: app.querySelector('#destinationState').value.trim(),
       destinationCountry: app.querySelector('#destinationCountry').value.trim(),
       travelDate: app.querySelector('#travelDate').value,
-      mode: app.querySelector('#mode').value,
+      mode: app.querySelector('input[name="mode"]:checked')?.value || '',
       notes: app.querySelector('#notes').value.trim()
     };
     try {

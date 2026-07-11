@@ -81,8 +81,9 @@ function renderPlan(app, plan) {
 
 function renderLoading(app) {
   app.innerHTML = `
-    <div class="glass-card">
+    <div class="glass-card" role="status" aria-live="polite">
       <h2 style="margin-top:0;">Building your preparedness plan…</h2>
+      <p style="color:var(--text-secondary)">We’re combining your household needs with the latest weather. This can take a few moments.</p>
       <div class="skeleton" style="height:24px; margin-bottom:12px;"></div>
       <div class="skeleton" style="height:120px; margin-bottom:12px;"></div>
       <div class="skeleton" style="height:120px;"></div>

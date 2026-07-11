@@ -10,7 +10,7 @@ export function renderLogin(app) {
       <div class="glass-card auth-card">
         <h1>Welcome back</h1>
         <p style="color: var(--text-secondary); margin-top: -8px;">Log in to MonsoonGuard</p>
-        <div id="error-slot"></div>
+        <div id="error-slot" aria-live="assertive"></div>
         <form id="login-form">
           <div class="field">
             <label for="email">Email</label>

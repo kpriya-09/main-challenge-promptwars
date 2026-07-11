@@ -26,13 +26,16 @@ async function renderRoute() {
 
   const app = document.getElementById('app');
   app.classList.remove('page-enter');
+  app.setAttribute('aria-busy', 'true');
   app.innerHTML = '';
   await route.render(app);
+  app.removeAttribute('aria-busy');
   requestAnimationFrame(() => app.classList.add('page-enter'));
 
   const navbar = document.getElementById('navbar');
   const { renderNavbar } = await import('../components/navbar.js');
   renderNavbar(navbar);
+  if (!app.querySelector('[tabindex="-1"]:focus')) app.focus({ preventScroll: true });
 }
 
 export function startRouter() {

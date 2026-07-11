@@ -13,14 +13,15 @@ function initials(name) {
 export function renderNavbar(el) {
   const user = store.getUser();
   el.innerHTML = '';
-  const nav = document.createElement('div');
+  const nav = document.createElement('nav');
   nav.className = 'navbar';
+  nav.setAttribute('aria-label', 'Primary navigation');
 
-  const brand = document.createElement('div');
-  brand.className = 'brand';
+  const brand = document.createElement('a');
+  brand.className = 'brand brand-link';
+  brand.href = '#/';
   brand.textContent = 'MonsoonGuard';
-  brand.style.cursor = 'pointer';
-  brand.onclick = () => navigate('#/');
+  brand.setAttribute('aria-label', 'MonsoonGuard home');
   nav.appendChild(brand);
 
   const links = document.createElement('div');
@@ -30,16 +31,19 @@ export function renderNavbar(el) {
     const dashLink = document.createElement('a');
     dashLink.href = '#/';
     dashLink.textContent = 'Dashboard';
+    if ((location.hash || '#/').split('?')[0] === '#/') dashLink.setAttribute('aria-current', 'page');
     links.appendChild(dashLink);
 
     const advisoryLink = document.createElement('a');
     advisoryLink.href = '#/advisory';
     advisoryLink.textContent = 'Travel Advisory';
+    if (location.hash.startsWith('#/advisory')) advisoryLink.setAttribute('aria-current', 'page');
     links.appendChild(advisoryLink);
 
     const historyLink = document.createElement('a');
     historyLink.href = '#/history';
     historyLink.textContent = 'History';
+    if (location.hash.startsWith('#/history')) historyLink.setAttribute('aria-current', 'page');
     links.appendChild(historyLink);
 
     const logout = document.createElement('button');
@@ -54,6 +58,8 @@ export function renderNavbar(el) {
     const avatar = document.createElement('div');
     avatar.className = 'avatar';
     avatar.textContent = initials(user.name || user.email);
+    avatar.title = user.name || user.email;
+    avatar.setAttribute('aria-label', `Signed in as ${user.name || user.email}`);
     links.appendChild(avatar);
   } else {
     const loginLink = document.createElement('a');

@@ -75,11 +75,11 @@ export async function renderDashboard(app) {
           ? plans
               .map(
                 (p) => `
-        <div class="sub-card" style="cursor:pointer;" data-plan-id="${p.id}">
+        <button type="button" class="sub-card sub-card-action" data-plan-id="${p.id}" aria-label="View preparedness plan from ${p.planDate}, ${p.plan?.riskLevel || 'unknown'} risk">
           <span>${p.planDate}</span>
           <span class="risk-badge ${p.plan?.riskLevel || 'low'}">${p.plan?.riskLevel || 'n/a'}</span>
           <span style="color: var(--text-secondary); font-size: 13px; margin-left:auto;">View →</span>
-        </div>`
+        </button>`
               )
               .join('')
           : '<p style="color: var(--text-secondary);">No plans yet. Generate your first one!</p>'
