@@ -1,4 +1,4 @@
-# ⛈️ MonsoonGuard
+# MonsoonGuard
 
 MonsoonGuard is a GenAI-powered monsoon preparedness and citizen assistance app. It turns a household's location, living situation, and vulnerabilities into a concrete, personalized plan for surviving monsoon season — not generic "keep an umbrella handy" advice, but a plan shaped by live weather data and the specific people in that household.
 

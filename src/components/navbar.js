@@ -18,7 +18,7 @@ export function renderNavbar(el) {
 
   const brand = document.createElement('div');
   brand.className = 'brand';
-  brand.textContent = '⛈️ MonsoonGuard';
+  brand.textContent = 'MonsoonGuard';
   brand.style.cursor = 'pointer';
   brand.onclick = () => navigate('#/');
   nav.appendChild(brand);

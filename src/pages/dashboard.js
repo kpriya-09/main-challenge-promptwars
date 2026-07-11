@@ -43,7 +43,7 @@ export async function renderDashboard(app) {
 
   app.innerHTML = `
     <div class="glass-card" style="margin-bottom: 20px;">
-      <h1 style="margin-top:0;">Namaste, ${user?.name?.split(' ')[0] || 'there'} ⛈️</h1>
+      <h1 style="margin-top:0;">Namaste, ${user?.name?.split(' ')[0] || 'there'}</h1>
       <p style="color: var(--text-secondary);">Here's your monsoon readiness at a glance.</p>
       ${
         profile
