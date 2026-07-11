@@ -40,6 +40,14 @@ Every plan is saved so it can be reviewed later without regenerating.
 - Preparedness content is generated in the user's own language from the start, which matters for reaching the people most affected by severe weather.
 - Missing information is surfaced, not papered over — the plan tells you what it assumed and why, instead of quietly guessing.
 
+## Test Credentials (For Evaluators)
+
+To test the application end-to-end without signing up, please use the following test credentials:
+- **Email:** `evaluator@monsoonguard.com`
+- **Password:** `evaluate123`
+
+*(Note for deployment: Please ensure you manually create this account via the sign-up page on your live URL before submitting, so evaluators can use it).*
+
 ## Tech stack
 
 - **Frontend**: Vite + vanilla JS SPA (hash router, no framework), dark glassmorphism design system

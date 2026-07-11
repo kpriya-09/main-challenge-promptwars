@@ -8,9 +8,9 @@ const STEPS = [
   {
     title: 'Location & Home',
     fields: [
-      { key: 'city', label: 'City / Town', type: 'text', required: true },
-      { key: 'state', label: 'State', type: 'text', required: true },
-      { key: 'country', label: 'Country', type: 'text', required: true },
+      { key: 'city', label: 'City / Town', type: 'select', options: ['Mumbai', 'Delhi', 'Bengaluru', 'Hyderabad', 'Ahmedabad', 'Chennai', 'Kolkata', 'Surat', 'Pune', 'Jaipur', 'Lucknow', 'Kanpur', 'Nagpur', 'Indore', 'Thane', 'Bhopal', 'Visakhapatnam', 'Pimpri-Chinchwad', 'Patna', 'Vadodara', 'Ghaziabad', 'Ludhiana', 'Agra', 'Nashik', 'Faridabad', 'Meerut', 'Rajkot', 'Kalyan-Dombivli', 'Vasai-Virar', 'Varanasi', 'Srinagar', 'Aurangabad', 'Dhanbad', 'Amritsar', 'Navi Mumbai', 'Allahabad', 'Howrah', 'Ranchi', 'Gwalior', 'Jabalpur', 'Coimbatore', 'Vijayawada', 'Jodhpur', 'Madurai', 'Raipur', 'Kota', 'Guwahati', 'Chandigarh', 'Other'], required: true },
+      { key: 'state', label: 'State', type: 'select', options: ['Andaman and Nicobar Islands', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chandigarh', 'Chhattisgarh', 'Dadra and Nagar Haveli', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu and Kashmir', 'Jharkhand', 'Karnataka', 'Kerala', 'Ladakh', 'Lakshadweep', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Puducherry', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'], required: true },
+      { key: 'country', label: 'Country', type: 'select', options: ['India'], required: true },
       { key: 'homeType', label: 'Home type', type: 'select', options: ['Apartment (upper floor)', 'Apartment (ground floor)', 'Independent house', 'Informal settlement'], required: true },
       { key: 'floodProne', label: 'Is your area known to flood or waterlog?', type: 'radio', options: ['Yes', 'No', 'Not sure'], required: true }
     ]
