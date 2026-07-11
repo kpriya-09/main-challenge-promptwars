@@ -9,7 +9,7 @@ function getClient() {
   return client;
 }
 
-const MODEL = 'gemini-2.5-flash';
+const MODEL = 'gemini-1.5-flash';
 
 /**
  * The only place that calls Gemini. Feature-specific code supplies a
